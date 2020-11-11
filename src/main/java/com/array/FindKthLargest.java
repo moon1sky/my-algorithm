@@ -11,24 +11,34 @@ public class FindKthLargest {
         int[] nums = {3, 2, 1, 5, 6, 4};
         int k = 2;
         int ints = findKthLargest(nums, k);
+        System.out.println(ints);
     }
 
     public static int findKthLargest(int[] nums, int k) {
+        final int temp = k;
         PriorityQueue<Integer> queue = new PriorityQueue<>(new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
-                return o2 - o1;
+                if (temp > nums.length / 2) {
+                    return o2 - o1;
+                } else {
+                    return o1 - o2;
+                }
             }
         });
 
-        for (int num : nums) {
-            queue.offer(num);
+        if (k > nums.length / 2) {
+            k = nums.length + 1 - k;
         }
 
-        int result = 0;
-        for (int i = 0; i < k; i++) {
-            result = queue.poll();
+        for (int num : nums) {
+            queue.offer(num);
+            if (queue.size() > k) {
+                queue.poll();
+            }
         }
+
+        int result = queue.poll();
         return result;
 
 
